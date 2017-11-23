@@ -1,0 +1,39 @@
+{
+    "replicates": "1",
+    "samples": {
+        "1" : {
+            "image": "lmrk_P1.jpg",
+            "width": "400",
+            "height": "407",
+            "landmarks": {
+                "P1" : {
+                    "x" : "11",
+                    "y" : "41",
+                    "distLim": "10"
+                },
+                "P2" : {
+                    "x" : "111",
+                    "y" : "141",
+                    "distLim": "10"
+                }
+            }
+        },
+        "2": {
+            "image": "lmrk_P2.jpg",
+            "width": "400",
+            "height": "407",
+            "landmarks": {
+                "P1" : {
+                    "x" : "12",
+                    "y" : "42",
+                    "distLim": "10"
+                },
+                "P2" : {
+                    "x" : "112",
+                    "y" : "142",
+                    "distLim": "10"
+                }
+            }
+        }
+    }
+}

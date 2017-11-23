@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"></meta>
+  <meta name="viewport" content="width=device-width"></meta>
+  <title>Unit Tests</title>
+  <link rel="stylesheet" href="lib/qunit-2.4.1.css"></link>
+  <script src="lib/jquery.js"></script>
+  <script src="lib/jquery.min.js"></script>
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script src="lib/qunit-2.4.1.js"></script>
+  <div class="btn-toolbar" style="visibility: hidden;">
+      <input type="hidden" name="active-tool" id="active-tool" value=""/>
+      <div id="toolbox" class="btn-group tools" data-toggle="buttons"></div>
+  </div>
+
+  <div id="appbox" style="visibility: hidden;">
+      <div id="canvasbox"></div>
+      <img id="canvasbg" style="visibility: hidden;"></img>
+      <img id="canvaseg" style="visibility: hidden;"></img>
+  </div>
+
+  <script src="../static/data.js"></script>
+  <script src="../static/draw.js"></script>
+  <script src="../static/toolbox.js"></script>
+  <script src="../static/logger.js"></script>
+  <script src="../static/manager.js"></script>
+  <script>
+     var manager = new Manager();
+  </script>
+  <script src="test_data.js"></script>
+  <script src="test_draw.js"></script>
+</body>
+</html>

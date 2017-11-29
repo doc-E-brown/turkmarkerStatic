@@ -12,6 +12,7 @@ function Manager() {
     this.canvas = new Canvas("#canvasbg");
     this.testRun = new TestRun();
     this.logger = new Logger();
+    this.turkAssignment = false;
 }
 
 function evt_canvas_mousedown(e, manager) {
@@ -84,13 +85,68 @@ Manager.prototype = {
 
     changeTool: function(btn){
         var currSample = this.manager.testRun.getCurrSample();
-        currSample.findLandmarkById(
-            btn.currentTarget.innerText);
         currSample.setCurrLandmarkById(btn.currentTarget.innerText);
         this.manager.logger.addMsg("Change Tool: " + btn.currentTarget.innerText);
 
         // Update the example image
         $("#canvaseg").attr("src", "./static/lmrk_" + btn.currentTarget.innerText + ".jpg"); 
+    },
+
+    nextTool: function(){
+        var currSample = this.testRun.getCurrSample();
+        var currLandmarkId = currSample.getCurrLandmark().id;
+
+        // Only execute if valid landmarks
+        if ((currSample.currentLandmark + 1) < currSample.landmarks.length){
+
+            // Disable the current landmark button
+            $("#label_" + currLandmarkId).attr({
+                class: "btn btn-default"});
+
+            var nextLandmarkId = currSample.landmarks[currSample.currentLandmark + 1].id;
+            currSample.setCurrLandmarkById(nextLandmarkId);
+
+            $("#label_" + nextLandmarkId).attr({
+                class: "btn btn-default active"});
+
+            this.logger.addMsg("Change Tool: " + nextLandmarkId);
+
+            // Update the example image
+            $("#canvaseg").attr("src", "./static/lmrk_" + nextLandmarkId + ".jpg"); 
+        }
+    },
+
+    prevTool: function(){
+        var currSample = this.testRun.getCurrSample();
+        var currLandmarkId = currSample.getCurrLandmark().id;
+
+        // Only execute if valid landmarks
+        if ((currSample.currentLandmark -1) <= 0){
+
+            // Disable the current landmark button
+            $("#label_" + currLandmarkId).attr({
+                class: "btn btn-default"});
+
+            var nextLandmarkId = currSample.landmarks[currSample.currentLandmark - 1].id;
+            currSample.setCurrLandmarkById(nextLandmarkId);
+
+            $("#label_" + nextLandmarkId).attr({
+                class: "btn btn-default active"});
+
+            this.logger.addMsg("Change Tool: " + nextLandmarkId);
+
+            // Update the example image
+            $("#canvaseg").attr("src", "./static/lmrk_" + nextLandmarkId + ".jpg"); 
+        }
+    },
+
+
+    updateProgressBar: function() {
+        // Update the progress bar
+        currSamp = parseFloat(this.testRun.currentSample);
+        progress = 100 * (currSamp) / parseFloat(this.testRun.samples.length);
+
+        $(".progress-bar").css('width', progress + "%").attr('aria-valuenow',progress);
     },
 
     nextSample: function(){
@@ -100,6 +156,7 @@ Manager.prototype = {
 
         // Move to the next sample
         sample = this.testRun.nextSample();
+        this.updateProgressBar();
 
         // If there is a next sample use it
         if (sample){
@@ -117,19 +174,90 @@ Manager.prototype = {
             var results = JSON.stringify(this.testRun);
             var activityLog = JSON.stringify(this.logger);
 
-            $("#results").val(results);
-            $("#activity_log").val(activityLog);
+            $("#check-warning-message").attr({
+                class: "alert alert-success", 
+                style: "visibility: visible;"});
+
+            // Make the submit button visible to allow submission.
+            // if this is a mechanical turk task
+            if (this.turkAssignment){
+                $("#results").val(results);
+                $("#activity_log").val(activityLog);
+                $("#submitButton").attr({
+                    style: "visibility: visible;"});
+                $("#nextButton").attr({
+                    style: "visibility: hidden;"});
+
+                $("#check-warning-message").append(
+                    "Press Submit to complete the task.  Thank you!");
+
+                this.logger.addMsg("Ready to submit");
+            }
+            // Not a mechanical turk task, download the data
+            else {
+
+                var textFile = null,
+                //this.logger.addMsg("Data ready for download");
+
+                makeTextFile = function (text) {
+                    var data = new Blob([text], {type: 'text/json'});
+
+                    // If we are replacing a previously generated file we need to
+                    // manually revoke the object URL to avoid memory leaks.
+                    if (textFile !== null) {
+                      window.URL.revokeObjectURL(textFile);
+                    }
+
+                    textFile = window.URL.createObjectURL(data);
+
+                    // returns a URL you can use as a href
+                    return textFile;
+                };
+
+                var data = {
+                    results: this.testRun,
+                    activityLog: this.logger,
+                }
+                // Create download file
+                $("#no_turk_data").attr({
+                    download: "data.json",
+                    href: makeTextFile(JSON.stringify(data)),
+                    style: "visiblity: visible;"});
+                $("#check-warning-message").append(
+                    "The data is ready for downloading! Please click on the link.  Thank you");
+            }
         }
-
-
     },
 
     init: function(config){
+        var assId = null, action = null, manager = null;
+        var currSample = null, currLandmarkId = null;
+        var form = $("#mturk_form")[0];
         this.config = config;
         loadConfigFromFile(this.config, this); // Load config
 
+        // Get the mechanical turk details
+        assId = get_param("assignmentId");
+        action = get_param("turkSubmitTo");
+        
+        // If an id is available
+        if (assId && action){
+            this.turkAssignment = true;
+            this.logger.addMsg("Valid MTurk assignment");
+
+            // Update form submission
+            form.action = action + "/mturk/externalSubmit";
+
+            // Hide the warning message
+            $(".alert").hide();
+        }
+        else {
+            this.turkAssignment = false;
+            this.logger.addMsg("NOT Valid MTurk assignment");
+        }
+
         // Enable canvas mouse clicks
-        var manager = this;
+        manager = this;
         $("#canvasbox").on("mousedown", function(data){
             evt_canvas_mousedown(data, manager);
         });
@@ -137,6 +265,22 @@ Manager.prototype = {
         // Bind listener to next sample button
         $("#nextButton").on("mousedown", function(data){
             manager.nextSample();
+        });
+
+        // Bind keypress events
+        $(document).keypress(function (evt){
+            if (document.activeElement.nodeName === "INPUT") {
+                return; // don't interrupt form typing
+            }
+            var key = String.fromCharCode(evt.keyCode || evt.which);
+
+            // Forward and back
+            if (key == "f") {
+                manager.nextTool();
+            }
+            else if (key == "b"){
+                manager.prevTool();
+            }
         });
 
         this.toolbox = new Toolbox(this.changeTool);

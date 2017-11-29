@@ -22,9 +22,16 @@
 
             <span id="custom-message"></span>
             <h2>Please click to <b><a href="protocol.html" target='_blank'>read the instructions</a></b> before you start!</h2>
+
             <p><b>Note:</b> The zoom feature in your browser has been disabled.</p> 
-            <b>Keyboard shortcuts:</b> Use <code>f</code> to advance to the next step, <code>b</code> to go back.
-            <div id="taxname"></div>
+                <b>Keyboard shortcuts:</b> Use <code>f</code> to advance to the next step, <code>b</code> to go back.
+            </p>
+
+
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>            
+
             <div class="btn-toolbar">
                 <input type="hidden" name="active-tool" id="active-tool" value=""/>
                 <div id="toolbox" class="btn-group tools" data-toggle="buttons"></div>
@@ -43,18 +50,13 @@
                 <button type="submit" id="nextButton" class="btn btn-primary btn-large" style="visibility: hidden;">Next Image</button>
             </div>
 
-            <textarea rows="3" id="review"></textarea>
-
             <div id="submitbox">
                 <form method="POST" class="form-inline" id="mturk_form" name="mturk_form">
+                    <a id="no_turk_data" style="visibility: hidden">Click here to download data</a>
                     <input type="hidden" id="assignmentId" name="assignmentId">
                     <input type="hidden" id="activity_log" name="activity_log">
                     <input type="hidden" id="results" name="results">
-                    <br>
-                    <div class="form-group">
-                        <button type="submit" id="submitButton" class="btn btn-success btn-large"
-                        style="visibility: hidden;">Submit</button>
-                    </div>
+                    <button type="submit" id="submitButton" class="btn btn-success btn-block" style="visibility: hidden;">Submit</button>
                 </form>
             </div>
         </div>

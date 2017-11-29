@@ -200,6 +200,7 @@ TestRun.prototype = {
 function configCallBack(data, manager){
     var samp = null, sample = null, lmrk = null;
     var landmark = null;
+    var currLandmarkId = null;
     //Parse the config data
     manager.testRun.replicates = data['replicates'];
 
@@ -230,6 +231,7 @@ function configCallBack(data, manager){
         manager.testRun.getCurrSample(),
         manager
     );
+
 }
 
 function loadConfigFromFile(config, manager){

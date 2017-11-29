@@ -45,6 +45,7 @@ Canvas.prototype = {
                 // Initialise the toolbox
                 manager.toolbox.init();
 
+                var firstLandmark = true;
                 for (var lmrk in tmp_landmarks){
                     // Create a canvas for each of the landmarks
                     var canvas = $("<canvas/>");
@@ -59,7 +60,8 @@ Canvas.prototype = {
                     manager.canvas.canvasbox.append(canvas);
 
                     // Create a point selection tool for each landmark
-                    manager.toolbox.addTool(sample.landmarks[lmrk].id);
+                    manager.toolbox.addTool(sample.landmarks[lmrk].id, firstLandmark);
+                    firstLandmark = false;
 
                     if (firstSample){
                         $("#canvaseg").attr("src", "./static/lmrk_" + id + ".jpg"); 

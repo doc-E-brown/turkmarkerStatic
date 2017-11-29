@@ -15,13 +15,22 @@ Toolbox.prototype = {
         this.toolbox.empty();
     },
 
-    addTool: function(id){
+    addTool: function(id, firstLandmark){
         var labelCallback = this.landmarkCallback;
         var label = $("<label/>");
-        label.attr({
-            class:"btn btn-default",
-            id: "label_" + id
-        });
+        if (firstLandmark){
+            label.attr({
+                class:"btn btn-default active",
+                id: "label_" + id
+            });
+        }
+        else{
+            label.attr({
+                class:"btn btn-default",
+                id: "label_" + id
+            });
+        }
+
         label.text(id);
 
         // Manage click behaviour

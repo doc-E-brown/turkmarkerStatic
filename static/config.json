@@ -1,5 +1,6 @@
 {
     "replicates": "0",
+    "assignmentType": "DOWNLOAD",
     "samples": {
         "1" : {
             "image": "lmrk_P1.jpg",

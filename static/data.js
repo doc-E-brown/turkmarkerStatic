@@ -202,6 +202,7 @@ function configCallBack(data, manager){
     var landmark = null;
     var currLandmarkId = null;
     //Parse the config data
+    manager.assignmentType = data['assignmentType'];
     manager.testRun.replicates = data['replicates'];
 
     for (samp in data['samples']){
@@ -231,6 +232,45 @@ function configCallBack(data, manager){
         manager.testRun.getCurrSample(),
         manager
     );
+
+    // Apply config details from address bar
+    // Get the mechanical turk details
+    assId = get_param("assignmentId");
+    action = get_param("turkSubmitTo");
+
+    // Apply some defaults to assignment ID
+    if (assId){
+        manager.assignmentId = assId;}
+    else {
+        manager.assignmentId = "noId";} 
+
+    // Assignment is SERVER based with id and submission info 
+    if (assId && action && (manager.assignmentType == ASSIGNMENT_TYPES.SERVER)){
+        manager.assignmentId = assId;
+        manager.logger.addMsg("Valid MTurk assignment");
+
+        // Update form submission
+        form.action = action + "/mturk/externalSubmit";
+
+        // Hide the warning message
+        $(".alert").hide();
+    }
+    // This is a file download assignment
+    else if (manager.assignmentType == ASSIGNMENT_TYPES.DOWNLOAD){
+
+        manager.logger.addMsg("Valid assignment ID");
+
+        // This is still a valid assignment
+        // Hide the warning message
+        $(".alert").hide();
+    }
+
+    // Invalid assignment configuration
+    // The system will still work, but the warning message will appear
+    else {
+        manager.logger.addMsg("Invalid assignment ID and action");
+    }
+
 
 }
 

@@ -1,6 +1,11 @@
 // Manage the data
 //
-//
+var ASSIGNMENT_TYPES = {
+    SERVER: 'SERVER',
+    DOWNLOAD: 'DOWNLOAD',
+    OTHER:' OTHER' 
+}
+
 // Retrieve GET parameters from address bar
 function get_param (param, default_value) {
     "use strict";
@@ -12,7 +17,8 @@ function Manager() {
     this.canvas = new Canvas("#canvasbg");
     this.testRun = new TestRun();
     this.logger = new Logger();
-    this.turkAssignment = false;
+    this.assignmentId = "noAssId";
+    this.assignmentType = null;
 }
 
 function evt_canvas_mousedown(e, manager) {
@@ -179,8 +185,8 @@ Manager.prototype = {
                 style: "visibility: visible;"});
 
             // Make the submit button visible to allow submission.
-            // if this is a mechanical turk task
-            if (this.turkAssignment){
+            // if this is a SERVER based task 
+            if (this.assignmentType == ASSIGNMENT_TYPES.SERVER){
                 $("#results").val(results);
                 $("#activity_log").val(activityLog);
                 $("#submitButton").attr({
@@ -220,11 +226,11 @@ Manager.prototype = {
                 }
                 // Create download file
                 $("#no_turk_data").attr({
-                    download: "data.json",
+                    download: this.assignmentId + ".json",
                     href: makeTextFile(JSON.stringify(data)),
                     style: "visiblity: visible;"});
                 $("#check-warning-message").append(
-                    "The data is ready for downloading! Please click on the link.  Thank you");
+                    "The data is ready for downloading! Please click on the link.  Thank you!");
             }
         }
     },
@@ -236,25 +242,6 @@ Manager.prototype = {
         this.config = config;
         loadConfigFromFile(this.config, this); // Load config
 
-        // Get the mechanical turk details
-        assId = get_param("assignmentId");
-        action = get_param("turkSubmitTo");
-        
-        // If an id is available
-        if (assId && action){
-            this.turkAssignment = true;
-            this.logger.addMsg("Valid MTurk assignment");
-
-            // Update form submission
-            form.action = action + "/mturk/externalSubmit";
-
-            // Hide the warning message
-            $(".alert").hide();
-        }
-        else {
-            this.turkAssignment = false;
-            this.logger.addMsg("NOT Valid MTurk assignment");
-        }
 
         // Enable canvas mouse clicks
         manager = this;

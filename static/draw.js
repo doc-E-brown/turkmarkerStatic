@@ -6,24 +6,37 @@ function Canvas(){
     this.canvasbg = $("#canvasbg");
 
     // Drawing parameters
-    this.drawParams = {
-        "strokeStyle" : "white",
-        "fillStyle" : "white",
-        "textAlign" : "alphabetic",
-        "textBaseline" : "right",
-        "font" : "10pt sans-serif",
-        "lineWidth" : 2,
-    };
+    this.lineWidth = "4";
+    this.textAlign = "alphabetic";
+    this.textBaseline = "right";
+    this.font = "10pt sans-serif";
 
-    this.validColour = "green";
-    this.neutralColour = "white";
-    this.invalidColour = "red";
+    this.drawParams = {
+        'lineWidth': this.linewidth,
+        'textAlign': this.textAlign,
+        'textBaseline': this.textBaseline,
+        'font': this.font
+    }
+
+    this.validFillColour = "green";
+    this.validStrokeColour = "green";
+    this.validTextColour = "green";
+    this.invalidFillColour = "red";
+    this.invalidStrokeColour = "red";
+    this.invalidTextColour = "red";
 
     this.radius = 3;
-    this.pinHeight = 2;
+    this.pinHeight = 3;
+
 }
 
 Canvas.prototype = {
+
+    updateDrawParams: function(){
+        for (param in this.drawParams){
+            this.drawParams[param] = this[param];
+        }
+    },
 
     setImage: function(image){
         this.canvasbg.attr("src", "./static/" + image);
@@ -77,12 +90,23 @@ Canvas.prototype = {
         }
     },
 
-    drawPoint: function(x, y, landmark){
+    clearCanvas: function(landmark){
+        var canvas = document.getElementById(landmark + "_canvas");
+        var ctx = canvas.getContext('2d');
+
+        // Clear everything
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    },
+
+    drawPoint: function(x, y, landmark, fillColour, strokeColour, textColour){
         // Get the current tool
         var canvas = document.getElementById(landmark + "_canvas");
         if (canvas.getContext){
             var ctx = canvas.getContext('2d');
             this.configureCanvas(ctx);
+
+            ctx['fillStyle'] = fillColour;
+            ctx['strokeStyle'] = strokeColour;
 
             // Clear existing points
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -94,26 +118,28 @@ Canvas.prototype = {
             ctx.arc(x, y, this.radius, 0, Math.PI * 2);
             ctx.fill();
             ctx.stroke();
-            ctx.fillText(landmark, x, y);
+
+            ctx['fillStyle'] = textColour;
+            ctx.fillText(landmark, x, y - parseInt(this.pinHeight));
         }
     },
 
     markValid: function(x, y, landmark){
         // Set the color 
-        this.drawParams["strokeStyle"] = this.validColour;
-        this.drawParams["fillStyle"] = this.validColour;
-        this.drawPoint(x, y, landmark);
-        this.drawParams["strokeStyle"] = this.neutralColour;
-        this.drawParams["fillStyle"] = this.neutralColour;
+        this.drawPoint(x, y, landmark, 
+            this.validFillColour,
+            this.validStrokeColour,
+            this.validTextColour,
+        );
     },
 
     markInvalid: function(x, y, landmark){
-        // Set the color 
-        this.drawParams["strokeStyle"] = this.invalidColour;
-        this.drawParams["fillStyle"] = this.invalidColour;
-        this.drawPoint(x, y, landmark);
-        this.drawParams["strokeStyle"] = this.neutralColour;
-        this.drawParams["fillStyle"] = this.neutralColour;
+
+        this.drawPoint(x, y, landmark, 
+            this.invalidFillColour,
+            this.invalidStrokeColour,
+            this.invalidTextColour,
+        );
     },
 
 }

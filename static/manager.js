@@ -19,23 +19,14 @@ function Manager() {
     this.logger = new Logger();
     this.assignmentId = "noAssId";
     this.assignmentType = null;
+    this.showAllLandmarks = true;
 }
 
-function evt_canvas_mousedown(e, manager) {
-    var appbox = $("#appbox");
-    var x = e.pageX - appbox[0].offsetLeft;
-    var y = e.pageY - appbox[0].offsetTop;
+function validate_landmarks(currSample, showAllLandmarks){
 
-    // Store record
-    var currSample = manager.testRun.getCurrSample();
-    var currLandmark = currSample.getCurrLandmark();
-    currLandmark.userSelection(x, y);
-
-    // Draw point
-    manager.canvas.drawPoint(x, y, currLandmark.id);
+    // Get landmarks validation status
     var validMarks = currSample.validateLandmarks();
-    manager.logger.addMsg("Point Select: " + 
-        currLandmark.id + "(" + x + "," + y + ")");
+    var currLandmark = currSample.getCurrLandmark();
 
     // Mark invalid landmarks
     var landmark = null;
@@ -46,8 +37,11 @@ function evt_canvas_mousedown(e, manager) {
     $("#check-warning-message").empty();
     for (var x = 0; x < validMarks[0].length; x++){
         landmark = validMarks[0][x];
-        manager.canvas.markInvalid(
-            landmark.user_x, landmark.user_y, landmark.id);
+
+        if (showAllLandmarks || (landmark.id == currLandmark.id)) { 
+            manager.canvas.markInvalid(
+                landmark.user_x, landmark.user_y, landmark.id);
+        }
         
         // Update the warning string
         msg = landmark.id + " is not in a valid position"
@@ -71,11 +65,13 @@ function evt_canvas_mousedown(e, manager) {
             style: "visibility: hidden;"});
     }
 
-    // Mark valid landmarks
+    // Mark all valid landmarks
     for (var x = 0; x < validMarks[1].length; x++){
         landmark = validMarks[1][x];
-        manager.canvas.markValid(
-            landmark.user_x, landmark.user_y, landmark.id);
+        if (showAllLandmarks || (landmark.id == currLandmark.id)) { 
+            manager.canvas.markValid(
+                landmark.user_x, landmark.user_y, landmark.id);
+        }
     }
 
     // Check for all valid landmarks
@@ -87,6 +83,26 @@ function evt_canvas_mousedown(e, manager) {
     }
 }
 
+
+
+function evt_canvas_mousedown(e, manager) {
+    var appbox = $("#appbox");
+    var x = e.pageX - appbox[0].offsetLeft;
+    var y = e.pageY - appbox[0].offsetTop;
+
+    // Store record
+    var currSample = manager.testRun.getCurrSample();
+    var currLandmark = currSample.getCurrLandmark();
+    currLandmark.userSelection(x, y);
+
+    // Draw point
+    manager.canvas.drawPoint(x, y, currLandmark.id);
+    manager.logger.addMsg("Point Select: " + 
+        currLandmark.id + "(" + x + "," + y + ")");
+
+    validate_landmarks(currSample, manager.showAllLandmarks);
+}
+
 Manager.prototype = {
 
     changeTool: function(btn){
@@ -96,7 +112,26 @@ Manager.prototype = {
 
         // Update the example image
         $("#canvaseg").attr("src", "./static/lmrk_" + btn.currentTarget.innerText + ".jpg"); 
+
+        // Clear landmark if required
+        if (!this.manager.showAllLandmarks){
+            this.manager.clearAllCanvases();
+        }
+
     },
+
+    clearAllCanvases: function(){
+        var currSample = this.testRun.getCurrSample();
+        for (var i = 0; i < currSample.landmarks.length; i++){
+            this.canvas.clearCanvas(currSample.landmarks[i].id);
+        }
+    },
+
+    showAllCanvases: function(){
+        var currSample = this.testRun.getCurrSample();
+        validate_landmarks(currSample, this.showAllLandmarks);
+    },
+
 
     nextTool: function(){
         var currSample = this.testRun.getCurrSample();
@@ -104,6 +139,11 @@ Manager.prototype = {
 
         // Only execute if valid landmarks
         if ((currSample.currentLandmark + 1) < currSample.landmarks.length){
+
+            // Clear landmark if required
+            if (!this.showAllLandmarks){
+                this.clearAllCanvases();
+            }
 
             // Disable the current landmark button
             $("#label_" + currLandmarkId).attr({
@@ -127,7 +167,12 @@ Manager.prototype = {
         var currLandmarkId = currSample.getCurrLandmark().id;
 
         // Only execute if valid landmarks
-        if ((currSample.currentLandmark -1) <= 0){
+        if ((currSample.currentLandmark - 1) >= 0){
+            
+            // Clear landmark if required
+            if (!this.showAllLandmarks){
+                this.clearAllCanvases();
+            }
 
             // Disable the current landmark button
             $("#label_" + currLandmarkId).attr({
@@ -254,6 +299,19 @@ Manager.prototype = {
             manager.nextSample();
         });
 
+        $("#toggleLandmarks").on("mousedown", function(Data){
+            if (manager.showAllLandmarks){
+                manager.showAllLandmarks = false;
+                $("#toggleLandmarks").text("Show All Landmarks");
+                manager.clearAllCanvases();
+            }
+            else {
+                manager.showAllLandmarks = true;
+                $("#toggleLandmarks").text("Hide All Landmarks");
+                manager.showAllCanvases();
+            }
+        });
+
         // Bind keypress events
         $(document).keypress(function (evt){
             if (document.activeElement.nodeName === "INPUT") {
@@ -267,6 +325,16 @@ Manager.prototype = {
             }
             else if (key == "b"){
                 manager.prevTool();
+            }
+            else if (key == "h"){
+                if (manager.showAllLandmarks){
+                    manager.showAllLandmarks = false;
+                    manager.clearAllCanvases();
+                }
+                else {
+                    manager.showAllLandmarks = true;
+                    manager.showAllCanvases();
+                }
             }
         });
 

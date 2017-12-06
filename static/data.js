@@ -146,8 +146,6 @@ Sample.prototype = {
             }
         }
     },
-
-
 }
 
 function TestRun(){
@@ -182,6 +180,10 @@ TestRun.prototype = {
         }
         //Shuffle samples
         this.samples = shuffle(tmp_samples);
+        for (j = 0; j < this.samples.length; j++){
+            console.log(this.samples[j].filename);
+        }
+
     },
 
     getCurrSample: function(){
@@ -201,8 +203,17 @@ function configCallBack(data, manager){
     var samp = null, sample = null, lmrk = null;
     var landmark = null;
     var currLandmarkId = null;
-    //Parse the config data
+
+    // Parse the config data
     manager.assignmentType = data['assignmentType'];
+
+    // Parse the drawing configuration
+    for (param in data['drawing']){
+        manager.canvas[param] = data['drawing'][param];
+    }
+    manager.canvas.updateDrawParams();
+
+    // Test configuration data
     manager.testRun.replicates = data['replicates'];
 
     for (samp in data['samples']){

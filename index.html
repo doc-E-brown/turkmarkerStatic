@@ -6,9 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="">
         <meta name="author" content="">
-        <link rel="stylesheet" href="./static/bootstrap.min.css">
-        <script src="./static/jquery.min.js"></script>
-        <script src="./static/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </head>
 
     <body>
@@ -38,10 +38,12 @@
             <form method="POST" class="form-inline" id="mturk_form" name="mturk_form">
                 <div style="padding-top:10px;">
                     <button id="toggleLandmarks" class="btn btn-primary" style="padding: 10px;">Hide All Landmarks</button>
-                    <button type="submit" id="nextButton" class="btn btn-primary" style="padding: 10px; visibility: hidden;">Next Image</button>
+                    <button type="button" id="nextButton" class="btn btn-primary" style="padding: 10px; visibility: hidden;">Next Image</button>
                     <button type="submit" id="submitButton" class="btn btn-success" style="padding: 10px; visibility: hidden;">Submit</button>
                 </div>
 
+                <div class="alert alert-warning" role="alert" id="check-warning-message" style="margin-top: 20px; visibility: visible"></div>
+                <a id="no_turk_data" style="visibility: hidden">Click here to download data</a>
                 <div id="appbox" style="padding: 10px;">
                     <div id="canvasbox"></div>
                     <img id="canvasbg"><img id="canvaseg" style="padding-left: 10px;">
@@ -50,11 +52,9 @@
                         <div id="infobox-content">
                         </div>
                     </div>
-                    <div class="alert alert-warning" role="alert" id="check-warning-message" style="visibility: hidden;"></div>
                 </div>
 
                 <div id="submitbox">
-                    <a id="no_turk_data" style="visibility: hidden">Click here to download data</a>
                     <input type="hidden" id="assignmentId" name="assignmentId">
                     <input type="hidden" id="activity_log" name="activity_log">
                     <input type="hidden" id="results" name="results">

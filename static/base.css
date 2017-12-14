@@ -34,10 +34,10 @@ canvas {
     font-size: 13px;
 }
 
-#confidence_box {
-    display: none;
-}
-
 img {
     padding: 0px;
+}
+
+.alert {
+    margin-top: 20px;
 }

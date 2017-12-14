@@ -24,7 +24,11 @@ function Manager() {
 
 function validate_landmarks(currSample, showAllLandmarks){
 
+    $("#check-warning-message").attr({
+        style: "margin-top: 20px; display: none; visibility: hidden;"});
+
     // Get landmarks validation status
+    $("#check-warning-message").empty();
     var validMarks = currSample.validateLandmarks();
     var currLandmark = currSample.getCurrLandmark();
 
@@ -34,7 +38,6 @@ function validate_landmarks(currSample, showAllLandmarks){
     var warnString = [];
 
     // Clear out the message buffer
-    $("#check-warning-message").empty();
     for (var x = 0; x < validMarks[0].length; x++){
         landmark = validMarks[0][x];
 
@@ -60,10 +63,6 @@ function validate_landmarks(currSample, showAllLandmarks){
         $("#check-warning-message").attr({
             style: "visibility: visible;"});
     }
-    else{
-        $("#check-warning-message").attr({
-            style: "visibility: hidden;"});
-    }
 
     // Mark all valid landmarks
     for (var x = 0; x < validMarks[1].length; x++){
@@ -82,7 +81,6 @@ function validate_landmarks(currSample, showAllLandmarks){
         });
     }
 }
-
 
 
 function evt_canvas_mousedown(e, manager) {
@@ -209,6 +207,9 @@ Manager.prototype = {
         sample = this.testRun.nextSample();
         this.updateProgressBar();
 
+        $("#nextButton").attr({
+            style: "visibility: hidden;"});
+
         // If there is a next sample use it
         if (sample){
 
@@ -218,6 +219,7 @@ Manager.prototype = {
 
             // Log the message
             this.logger.addMsg(msg);
+
         }
 
         // All samples have been completed, time to submit
@@ -227,7 +229,7 @@ Manager.prototype = {
 
             $("#check-warning-message").attr({
                 class: "alert alert-success", 
-                style: "visibility: visible;"});
+                style: "margin-top: 20px; visibility: visible;"});
 
             // Make the submit button visible to allow submission.
             // if this is a SERVER based task 
@@ -239,6 +241,7 @@ Manager.prototype = {
                 $("#nextButton").attr({
                     style: "visibility: hidden;"});
 
+                $("#check-warning-message").empty();
                 $("#check-warning-message").append(
                     "Press Submit to complete the task.  Thank you!");
 
@@ -274,6 +277,7 @@ Manager.prototype = {
                     download: this.assignmentId + ".json",
                     href: makeTextFile(JSON.stringify(data)),
                     style: "visiblity: visible;"});
+                $("#check-warning-message").empty();
                 $("#check-warning-message").append(
                     "The data is ready for downloading! Please click on the link.  Thank you!");
             }
@@ -329,10 +333,12 @@ Manager.prototype = {
             else if (key == "h"){
                 if (manager.showAllLandmarks){
                     manager.showAllLandmarks = false;
+                $("#toggleLandmarks").text("Show All Landmarks");
                     manager.clearAllCanvases();
                 }
                 else {
                     manager.showAllLandmarks = true;
+                $("#toggleLandmarks").text("Hide All Landmarks");
                     manager.showAllCanvases();
                 }
             }

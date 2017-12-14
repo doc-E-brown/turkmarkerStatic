@@ -180,9 +180,9 @@ TestRun.prototype = {
         }
         //Shuffle samples
         this.samples = shuffle(tmp_samples);
-        for (j = 0; j < this.samples.length; j++){
-            console.log(this.samples[j].filename);
-        }
+        //for (j = 0; j < this.samples.length; j++){
+        //    console.log(this.samples[j].filename);
+        //}
 
     },
 

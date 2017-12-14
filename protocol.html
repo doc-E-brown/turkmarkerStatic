@@ -1,37 +1,90 @@
-<p><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Mechanical Turk Facial Landmarking</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <style>
 
-<style>
-img {
-    border: 2px solid;
-}
-</style>
+        img {
+            border: 0px solid;
+            float: center;
+        }
+        </style>
+    </head>
+    <body>
 
-<div class="container"></p>
-<h1>MechanicalTurk Facial Landmarking Task</h1>
-<h2>Introduction</h2>
-<p>During this task you will be required to identify the location of a number of different landmarks on 5 
-images of faces.  You will be required to mark each image twice, thus there will be 10 images in total.
+        <div class="container"></p>
+        <h1>Mechanical Turk Facial Landmarking Task</h1>
+        <p>Please ensure that you read all of these instructions prior to accepting the HIT</p>
+        <h2> Description of Task </h2>
+        <p>During this task you will be asked to mark the location of a number of features on images of faces; where the
+        landmarks are selected from the set shown in the image below. </p>
 
-<h2> User Interface</h2>
+        <p><img class="center-block" alt="multipie" src="multipie.jpg" style="height: 300px;"></p>
 
+        <p>For each image, the number, order and type of landmarks will vary and will be specified in the <i>Landmark
+            Selectors</i> toolbar as seen in the image below.  You will be required to mark each image at least twice
+        though there will only be 10 images in total that you will be required to process.  It is estimated that if the
+        task is completed correctly it should take approximately 15 - 20 minutes to complete.
 
-marking 66 points on an image of a face using the provided web based interface.  To start
-the process you simply need to click on the button for the first point P1, then using the mouse select the corresponding
-point on the photograph of the face.</p>
-<p><img alt="button image" src="static/example_btn.png"></p>
-<p>The smaller example image to the left provides some guidance as to the correct, approximate location of each point.
-You should also notice that the example image illustrates the point that is
-currently selected for positioning (see example below) and when you select a different point the image and guidance
-will change correspondingly.</p>
-<p><img alt="example image" src="static/lmrk_P14.jpg"></p>
-<p>If you have accidentally placed a point in an invalid position you may see a message similar to that shown in the image
-below.  You must correct these warnings before you can submit the task.</p>
-<p><img alt="example warning" src="static/example_warning.png"></p>
-<p>Once you have marked <strong>ALL</strong> 66 points you will have completed the task and a submit button will be available.</p>
-<p><img alt="submit task" src="static/submit_task_btn.png"></p>
-<h2>Consent</h2>
-<p>This information will be used for academic research, by accepting this HIT you are giving permission for the
-information you have provided during this exercise to be used for this purpose.</p>
-<h2>Contact Information</h2>
-<p>If you have any further questions you can contact us directly through the Mechanical Turk <em>Contact Requester</em> link</p>
-</div>
+        </p>
+        
+        <h2> User Interface</h2>
+        This section describes the user interface that will be used to complete the landmarking task.
+
+        <p><img class="center-block" alt="UI" src="UI.png" style="width: 900px"></p>
+        
+        <p>The components of the user interface are as follows:</p>
+        <ul>
+            <li><strong>Image for Landmarking:</strong> this is the image that you will be processing, simply click on
+                the location in the images corresponding to the closes position of the current specified landmark.</li>
+            <li><strong>Example Image:</strong> this generic image is updated for each landmark in the set and is used
+                to provide an indication of the approximate location of the current landmark being selected.<u>  DO NOT
+                    CLICK ON THIS IMAGE</u>.   You should also notice that the example image illustrates the point that
+            is currently selected for positioning (see example above) and when you select a different point the image
+            and guidance will change correspondingly.</li>
+            <li><strong>Landmark Selectors:</strong>this part of the UI serves two functions: 1. to provide you with the
+                list of landmarks to be applied to the image and the order in which they are to be applied and 2. to
+                allow you to select each landmark to be processed.  (Note you can use the <code>f</code> keyboard
+                shortcut to select the next landmark in the list and the <code>b</code> keyboard shortcut to select the
+                previous landmark.</li>
+            <li><strong>Progress Bar:</strong> provides an indication of completion progress.</li> 
+            <li><strong>Button Panel:</strong> there are three (3) separate buttons in the panel:
+                <ul>
+                    <li><strong>Hide / Show All Landmarks:</strong> if previously placed landmarks are obstructing the
+                        view of the image to place subsequent landmarks you can click on this button or use the shortcut
+                        key <code>h</code> to hide / show all the landmarks except the one being placed.</li>
+                    <li><strong>Next Image:</strong>  this button will only be visible when all landmarks for the
+                        current image are in valid positions and the landmarking task has been successfully completed
+                        for the image.</li>
+                    <li><strong>Submit:</strong> this button will only be visible when the entire HIT has been completed
+                        and is ready for submission.</li>
+                </ul>
+            </li> 
+
+        </ul>
+
+        <h2>Landmark Validation</h2>
+
+        <p>The system will check the approximate position of each landmark on the target image.  If the landmark is
+        placed in a valid position it will show <strong><font color="green">green</font></strong> in colour, if the
+        location is not valid the landmark will be coloured <strong><font color="red">red</font></strong> and a message
+        will appear in the dialogue box as shown in the image below.  You will not be able to complete the task until
+        all landmarks for all images are in valid positions</p>
+
+        <p><img class="center-block" alt="valid_invalid" src="valid_invalid.png" style="width: 500px"></p>
+
+        <h2>Consent</h2>
+        <p>This information will be used for academic research, by accepting this HIT you are giving permission for the
+        information you have provided during this exercise to be used for this purpose.</p>
+        <h2>Contact Information</h2>
+        <p>If you have any further questions you can contact us directly through the Mechanical Turk <em>Contact Requester</em> link</p>
+        </div>
+    </body>
+</html>

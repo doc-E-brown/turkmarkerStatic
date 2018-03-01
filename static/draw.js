@@ -33,7 +33,7 @@ function Canvas(){
 Canvas.prototype = {
 
     updateDrawParams: function(){
-        for (param in this.drawParams){
+        for (var param in this.drawParams){
             this.drawParams[param] = this[param];
         }
     },

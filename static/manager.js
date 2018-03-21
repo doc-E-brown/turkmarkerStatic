@@ -101,6 +101,19 @@ function evt_canvas_mousedown(e, manager) {
     validate_landmarks(currSample, manager.showAllLandmarks);
 }
 
+function evt_toggle_landmarks(e, manager){
+    if (manager.showAllLandmarks){
+        manager.showAllLandmarks = false;
+        $("#toggleLandmarks").text("Show All Landmarks");
+        manager.clearAllCanvases();
+    }
+    else {
+        manager.showAllLandmarks = true;
+        $("#toggleLandmarks").text("Hide All Landmarks");
+        manager.showAllCanvases();
+    }
+}
+
 Manager.prototype = {
 
     changeTool: function(btn){
@@ -303,17 +316,8 @@ Manager.prototype = {
             manager.nextSample();
         });
 
-        $("#toggleLandmarks").on("mousedown", function(Data){
-            if (manager.showAllLandmarks){
-                manager.showAllLandmarks = false;
-                $("#toggleLandmarks").text("Show All Landmarks");
-                manager.clearAllCanvases();
-            }
-            else {
-                manager.showAllLandmarks = true;
-                $("#toggleLandmarks").text("Hide All Landmarks");
-                manager.showAllCanvases();
-            }
+        $("#toggleLandmarks").on("mousedown", function(data){
+            evt_toggle_landmarks(data, manager);
         });
 
         // Bind keypress events

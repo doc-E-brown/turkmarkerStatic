@@ -37,7 +37,7 @@
 
             <form method="POST" class="form-inline" id="mturk_form" name="mturk_form">
                 <div style="padding-top:10px;">
-                    <button id="toggleLandmarks" class="btn btn-primary" style="padding: 10px;">Hide All Landmarks</button>
+                    <button type="button" id="toggleLandmarks" class="btn btn-primary" style="padding: 10px;">Hide All Landmarks</button>
                     <button type="button" id="nextButton" class="btn btn-primary" style="padding: 10px; visibility: hidden;">Next Image</button>
                     <button type="submit" id="submitButton" class="btn btn-success" style="padding: 10px; visibility: hidden;">Submit</button>
                 </div>
@@ -46,7 +46,7 @@
                 <a id="no_turk_data" style="visibility: hidden">Click here to download data</a>
                 <div id="appbox" style="padding: 10px;">
                     <div id="canvasbox"></div>
-                    <img id="canvasbg"><img id="canvaseg" style="padding-left: 10px;">
+                    <img id="canvasbg" style="position: absolute; left: 0px; top: 0px;"><img id="canvaseg" style="position: absolute;">
 
                     <div id="infobox">
                         <div id="infobox-content">

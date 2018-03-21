@@ -39,7 +39,7 @@ Canvas.prototype = {
     },
 
     setImage: function(image){
-        this.canvasbg.attr("src", "./static/" + image);
+        this.canvasbg.attr("src", "./static" + image);
     },
 
     // Update the canvas for a particular sample
@@ -78,6 +78,7 @@ Canvas.prototype = {
 
                     if (firstSample){
                         $("#canvaseg").attr("src", "./static/lmrk_" + id + ".jpg"); 
+                        $("#canvaseg").attr("style", "position: absolute; left: " + (width + 10) + "px; top: 0px"); 
                         firstSample = false;
                     }
                 }

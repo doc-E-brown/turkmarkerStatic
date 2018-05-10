@@ -18,6 +18,8 @@ function Manager() {
     this.testRun = new TestRun();
     this.logger = new Logger();
     this.assignmentId = "noAssId";
+    this.workerId = "noWorkerId";
+    this.hitId = "noHITId";
     this.assignmentType = null;
     this.showAllLandmarks = false; // Hide all landmarks by default
 }
@@ -246,7 +248,7 @@ Manager.prototype = {
 
             // Make the submit button visible to allow submission.
             // if this is a SERVER based task 
-            if (this.assignmentType == ASSIGNMENT_TYPES.SERVER){
+            if (this.assignmentId && this.assignmentType == ASSIGNMENT_TYPES.SERVER){
                 $("#results").val(results);
                 $("#activity_log").val(activityLog);
                 $("#submitButton").attr({
@@ -261,7 +263,7 @@ Manager.prototype = {
                 this.logger.addMsg("Ready to submit");
             }
             // Not a mechanical turk task, download the data
-            else {
+            else if (this.assignmentType == ASSIGNMENT_TYPES.DOWNLOAD) {
 
                 var textFile = null,
                 //this.logger.addMsg("Data ready for download");
@@ -287,23 +289,34 @@ Manager.prototype = {
                 }
                 // Create download file
                 $("#no_turk_data").attr({
-                    download: this.assignmentId + ".json",
+                    download: "data.json",
                     href: makeTextFile(JSON.stringify(data)),
                     style: "visiblity: visible;"});
                 $("#check-warning-message").empty();
                 $("#check-warning-message").append(
                     "The data is ready for downloading! Please click on the link.  Thank you!");
             }
+
+            else {
+                $("#check-warning-message").empty();
+                $("#check-warning-message").append(
+                    "Configuration Error!!");
+            }
         }
     },
 
     init: function(config){
-        var assId = null, action = null, manager = null;
+        var manager = null;
         var currSample = null, currLandmarkId = null;
         var form = $("#mturk_form")[0];
         this.config = config;
-        loadConfigFromFile(this.config, this); // Load config
 
+        // Apply config details from address bar
+        // Get the mechanical turk details
+        this.assignmentId = get_param('assignment_id');
+        this.hitId = get_param('hitId');
+        this.workerId = get_param('workerId');
+        loadConfigFromFile(this.config, this); // Load config
 
         // Enable canvas mouse clicks
         manager = this;

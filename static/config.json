@@ -1,6 +1,6 @@
 {
     "replicates": 1,
-    "assignmentType": "DOWNLOAD",
+    "assignmentType": "SERVER",
     "drawing": {
         "validFillColour": "rgba(255, 255, 255, 1)",
         "validStrokeColour": "rgba(104, 191, 63, 1)",

@@ -19,7 +19,7 @@ function Manager() {
     this.logger = new Logger();
     this.assignmentId = "noAssId";
     this.assignmentType = null;
-    this.showAllLandmarks = true;
+    this.showAllLandmarks = false; // Hide all landmarks by default
 }
 
 function validate_landmarks(currSample, showAllLandmarks){
@@ -77,7 +77,7 @@ function validate_landmarks(currSample, showAllLandmarks){
     if (currSample.validLandmarks){
         // Display next sample button
         $("#nextButton").attr({
-            style: "visibility: visible;",
+            style: "padding: 10px; visibility: visible;",
         });
     }
 }
@@ -221,7 +221,7 @@ Manager.prototype = {
         this.updateProgressBar();
 
         $("#nextButton").attr({
-            style: "visibility: hidden;"});
+            style: "padding: 10px; visibility: hidden;"});
 
         // If there is a next sample use it
         if (sample){
@@ -250,9 +250,9 @@ Manager.prototype = {
                 $("#results").val(results);
                 $("#activity_log").val(activityLog);
                 $("#submitButton").attr({
-                    style: "visibility: visible;"});
+                    style: "padding: 10px; visibility: visible;"});
                 $("#nextButton").attr({
-                    style: "visibility: hidden;"});
+                    style: "padding: 10px; visibility: hidden;"});
 
                 $("#check-warning-message").empty();
                 $("#check-warning-message").append(

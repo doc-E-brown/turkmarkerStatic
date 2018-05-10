@@ -314,8 +314,6 @@ Manager.prototype = {
         // Apply config details from address bar
         // Get the mechanical turk details
         this.assignmentId = get_param('assignment_id');
-        this.hitId = get_param('hitId');
-        this.workerId = get_param('workerId');
         loadConfigFromFile(this.config, this); // Load config
 
         // Enable canvas mouse clicks

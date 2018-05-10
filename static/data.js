@@ -1,4 +1,5 @@
 // Javascript for loading and defining test information
+// 
 // Ben Johnston
 // BSD 3-Clause 
 // Wed Nov  8 14:34:51 AEDT 2017
@@ -200,12 +201,13 @@ TestRun.prototype = {
 }
 
 function configCallBack(data, manager){
-    var samp = null, sample = null, lmrk = null;
+    var samp = null, action = null, sample = null, lmrk = null;
     var landmark = null;
     var currLandmarkId = null;
 
     // Parse the config data
     manager.assignmentType = data['assignmentType'];
+    manager.action = data['form_action']
 
     // Parse the drawing configuration
     for (param in data['drawing']){
@@ -244,24 +246,12 @@ function configCallBack(data, manager){
         manager
     );
 
-    // Apply config details from address bar
-    // Get the mechanical turk details
-    assId = get_param("assignmentId");
-    action = get_param("turkSubmitTo");
-
-    // Apply some defaults to assignment ID
-    if (assId){
-        manager.assignmentId = assId;}
-    else {
-        manager.assignmentId = "noId";} 
-
     // Assignment is SERVER based with id and submission info 
-    if (assId && action && (manager.assignmentType == ASSIGNMENT_TYPES.SERVER)){
-        manager.assignmentId = assId;
+    if (manager.assignmentId && manager.action && (manager.assignmentType == ASSIGNMENT_TYPES.SERVER)){
         manager.logger.addMsg("Valid MTurk assignment");
 
         // Update form submission
-        form.action = action + "/mturk/externalSubmit";
+        $("#mturk_form")[0].action = manager.action + "/mturk/externalSubmit";
 
         // Hide the warning message
         $(".alert").hide();

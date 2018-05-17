@@ -7,7 +7,7 @@ var ASSIGNMENT_TYPES = {
 }
 
 // Retrieve GET parameters from address bar
-function get_param (param, default_value) {
+function get_param(param, default_value) {
     "use strict";
     var res = new RegExp(param + "=([^&#]*)").exec(window.location.search);
     return res && decodeURIComponent(res[1]) || default_value || "";
@@ -248,7 +248,8 @@ Manager.prototype = {
 
             // Make the submit button visible to allow submission.
             // if this is a SERVER based task 
-            if (this.assignmentId && this.assignmentType == ASSIGNMENT_TYPES.SERVER){
+            var ass_id = get_param('assignment_id');
+            if (ass_id && this.assignmentType == ASSIGNMENT_TYPES.SERVER){
                 $("#results").val(results);
                 $("#activity_log").val(activityLog);
                 $("#submitButton").attr({

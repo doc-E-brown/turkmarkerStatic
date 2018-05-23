@@ -7,7 +7,18 @@ var ASSIGNMENT_TYPES = {
 }
 
 // Retrieve GET parameters from address bar
-function get_param(param, default_value) {
+function get_param(parameterName, default_value){
+    var result = null,
+        tmp = [];
+    var items = location.search.substr(1).split("&");
+    for (var index = 0; index < items.length; index++) {
+        tmp = items[index].split("=");
+        if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+    }
+    return result;
+}
+    
+function _get_param(param, default_value) {
     "use strict";
     var res = new RegExp(param + "=([^&#]*)").exec(window.location.search);
     return res && decodeURIComponent(res[1]) || default_value || "";
@@ -248,10 +259,11 @@ Manager.prototype = {
 
             // Make the submit button visible to allow submission.
             // if this is a SERVER based task 
-            var ass_id = get_param('assignment_id');
+            var ass_id = get_param('assignmentId');
             if (ass_id && this.assignmentType == ASSIGNMENT_TYPES.SERVER){
                 $("#results").val(results);
                 $("#activity_log").val(activityLog);
+                $("#assignmentId").val(ass_id);
                 $("#submitButton").attr({
                     style: "padding: 10px; visibility: visible;"});
                 $("#nextButton").attr({
@@ -314,7 +326,7 @@ Manager.prototype = {
 
         // Apply config details from address bar
         // Get the mechanical turk details
-        this.assignmentId = get_param('assignment_id');
+        this.assignmentId = get_param('assignmentId');
         loadConfigFromFile(this.config, this); // Load config
 
         // Enable canvas mouse clicks

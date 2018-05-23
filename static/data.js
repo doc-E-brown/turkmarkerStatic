@@ -271,6 +271,9 @@ function configCallBack(data, manager){
     // The system will still work, but the warning message will appear
     else {
         manager.logger.addMsg("Invalid assignment ID and action");
+        manager.logger.addMsg("assignmentType: " + manager.assignmentType);
+        manager.logger.addMsg("assignmentId: " + ass_id);
+        manager.logger.addMsg("action: " + manager.action);
     }
 
 

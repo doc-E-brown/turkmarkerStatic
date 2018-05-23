@@ -23,17 +23,22 @@
         <h1>Mechanical Turk Facial Landmarking Task</h1>
         <p>Please ensure that you read all of these instructions prior to accepting the HIT</p>
         <h2> Description of Task </h2>
-        <p>During this task you will be asked to mark the location of a number of features on images of faces; where the
-        landmarks are selected from the set shown in the image below. </p>
+        <p>During this task you will be asked to indicate the location of 22 facial landmarks on four (4) separate
+        images and will be required to repeat the task three (3) times for each image; thus completing the task for
+        12 images in total.  The images will be presented to you in random order and for each image the order in
+        which the facial landmarks are to be identified will also be randomized.</p> 
 
-        <p><img class="center-block" alt="multipie" src="multipie.jpg" style="height: 300px;"></p>
-
-        <p>For each image, the number, order and type of landmarks will vary and will be specified in the <i>Landmark
-            Selectors</i> toolbar as seen in the image below.  You will be required to mark each image at least twice
-        though there will only be 10 images in total that you will be required to process.  It is estimated that if the
-        task is completed correctly it should take approximately 15 - 20 minutes to complete.
-
+        <p>If completed correctly it is estimated that the task will take 15 - 20 minutes to complete.</p>
+        
+        <h2>Performance Bonus</h2>
+        <p>A bonus payment is available for this HIT which is designed to encourage a careful and considerate approach to
+        completing the task.  Those workers who achieve an agreement level of 90% or greater with our "expert" workers
+        will receive a bonus payment of $X for this task.  A landmark position is said to be in agreement with our "expert"
+        workers if it is positioned within a specified distance from the position chosen by the expert.  A bonus payment
+        is to be awarded if 90% or more of all the landmarks across all images and repeats are in agreement with the
+        "experts".
         </p>
+
         
         <h2> User Interface</h2>
         This section describes the user interface that will be used to complete the landmarking task.
@@ -49,7 +54,7 @@
                     CLICK ON THIS IMAGE</u>.   You should also notice that the example image illustrates the point that
             is currently selected for positioning (see example above) and when you select a different point the image
             and guidance will change correspondingly.</li>
-            <li><strong>Landmark Selectors:</strong>this part of the UI serves two functions: 1. to provide you with the
+            <li><strong>Landmark Selectors:</strong> this part of the UI serves two functions: 1. to provide you with the
                 list of landmarks to be applied to the image and the order in which they are to be applied and 2. to
                 allow you to select each landmark to be processed.  (Note you can use the <code>f</code> keyboard
                 shortcut to select the next landmark in the list and the <code>b</code> keyboard shortcut to select the
@@ -59,7 +64,8 @@
                 <ul>
                     <li><strong>Hide / Show All Landmarks:</strong> if previously placed landmarks are obstructing the
                         view of the image to place subsequent landmarks you can click on this button or use the shortcut
-                        key <code>h</code> to hide / show all the landmarks except the one being placed.</li>
+                        key <code>h</code> to hide / show all the landmarks except the one being placed.  By default
+                        only the landmark currently being selected is shown by the system.</li>
                     <li><strong>Next Image:</strong>  this button will only be visible when all landmarks for the
                         current image are in valid positions and the landmarking task has been successfully completed
                         for the image.</li>
